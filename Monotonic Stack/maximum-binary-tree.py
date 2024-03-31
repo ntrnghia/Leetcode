@@ -20,13 +20,11 @@ class Solution:
     def constructMaximumBinaryTree(self, nums: List[int]) -> Optional[TreeNode]:
         stack = []
         tree = {}
-        top = None
-        for num in nums:
-            tree[num] = TreeNode(num)
-            while stack and num > stack[-1]:
-                top = stack.pop()
-                tree[num].left = tree[top]
+        for next_greater in nums:
+            tree[next_greater] = TreeNode(next_greater)
+            while stack and stack[-1] < next_greater:
+                tree[next_greater].left = tree[stack.pop()]
             if stack:
-                tree[stack[-1]].right = tree[num]
-            stack.append(num)
+                tree[stack[-1]].right = tree[next_greater]
+            stack.append(next_greater)
         return tree[stack[0]]

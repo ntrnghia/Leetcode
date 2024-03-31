@@ -10,13 +10,8 @@ from typing import List
 class Solution:
     def finalPrices(self, prices: List[int]) -> List[int]:
         stack = []
-        res = []
-        for price in reversed(prices):
-            while stack and price < stack[-1]:
-                stack.pop()
-            if stack:
-                res.append(price - stack[-1])
-            else:
-                res.append(price)
-            stack.append(price)
-        return reversed(res)
+        for next_smaller in range(len(prices)):
+            while stack and prices[stack[-1]] >= prices[next_smaller]:
+                prices[stack.pop()] -= prices[next_smaller]
+            stack.append(next_smaller)
+        return prices
